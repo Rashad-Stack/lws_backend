@@ -1,0 +1,29 @@
+{
+  "name": "lws_backend",
+  "version": "1.0.0",
+  "description": "This is lws laernign portal backend service.",
+  "main": "server.js",
+  "repository": "https://github.com/Rashad-Stack/lws_backend.git",
+  "author": "Rashad-Stack <tex.eng.rashed@gmail.com>",
+  "license": "MIT",
+  "packageManager": "yarn@3.5.0",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "nodemon server.js",
+    "debug": "NODE_ENV=production nodemon server.js"
+  },
+  "dependencies": {
+    "bcrypt": "^5.1.0",
+    "dotenv": "^16.0.3",
+    "express": "^4.18.2",
+    "jsonwebtoken": "^9.0.0",
+    "mongoose": "^7.0.3",
+    "nodemon": "^2.0.22",
+    "validator": "^13.9.0"
+  },
+  "devDependencies": {
+    "eslint": "^7.32.0 || ^8.2.0",
+    "eslint-config-airbnb-base": "latest",
+    "eslint-plugin-import": "^2.25.2"
+  }
+}
