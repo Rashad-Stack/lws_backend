@@ -55,13 +55,35 @@ exports.updateVideo = async (req, res) => {
 
     if (!video) {
       res.status(404).json({
-        status: "success",
+        status: "failed",
         message: "No video found with this id!",
       });
     } else {
       res.status(200).json({
         status: "success",
         video,
+      });
+    }
+  } catch (error) {
+    res.status(401).json({
+      status: "failed",
+      error,
+    });
+  }
+};
+
+exports.deleteVideo = async (req, res) => {
+  try {
+    const video = await Video.findByIdAndDelete(req.params.id);
+    if (!video) {
+      res.status(404).json({
+        status: "failed",
+        message: "No video found with this id!",
+      });
+    } else {
+      res.status(200).json({
+        status: "success",
+        video: null,
       });
     }
   } catch (error) {
