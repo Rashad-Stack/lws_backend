@@ -1,95 +1,63 @@
 const Video = require("../models/videoModel");
+const AppError = require("../utils/appError");
+const catchAsync = require("../utils/catchAsync");
 
-exports.postVideo = async (req, res) => {
-  try {
-    const video = await Video.create({
-      title: req.body.title,
-      url: req.body.url,
-      views: req.body.views,
-      duration: req.body.duration,
-      description: req.body.description,
-    });
+exports.postVideo = catchAsync(async (req, res) => {
+  const video = await Video.create({
+    title: req.body.title,
+    url: req.body.url,
+    views: req.body.views,
+    duration: req.body.duration,
+    description: req.body.description,
+  });
+
+  res.status(200).json({
+    status: "success",
+    video,
+  });
+});
+
+exports.getVideo = catchAsync(async (req, res, next) => {
+  const videos = await Video.find();
+  if (videos.length > 0) {
+    const video = await Video.findById(req.params.id || videos[0]._id);
+    if (!video) {
+      return next(new AppError("No video found!", 404));
+    }
 
     res.status(200).json({
       status: "success",
       video,
     });
-  } catch (error) {
-    res.status(401).json({
-      status: "failed",
-      error,
+  } else {
+    return next(new AppError("No video found!", 404));
+  }
+});
+
+exports.updateVideo = catchAsync(async (req, res, next) => {
+  const video = await Video.findByIdAndUpdate(req.params.id, req.body, {
+    new: true,
+    runValidators: true,
+  });
+
+  if (!video) {
+    return next(new AppError("No video found with this id!", 404));
+  } else {
+    res.status(200).json({
+      status: "success",
+      video,
     });
   }
-};
+});
 
-exports.getVideo = async (req, res) => {
-  console.log(req.params.id);
-  try {
-    const videos = await Video.find();
-    if (videos.length > 0) {
-      const video = await Video.findById(req.params.id || videos[0]._id);
-      res.status(200).json({
-        status: "success",
-        video,
-      });
-    } else {
-      res.status(404).json({
-        status: "success",
-        message: "no video found",
-      });
-    }
-  } catch (error) {
-    res.status(401).json({
-      status: "failed",
-      error,
+exports.deleteVideo = catchAsync(async (req, res, next) => {
+  const video = await Video.findByIdAndDelete(req.params.id);
+  if (!video) {
+    return next(new AppError("No video found with this id!", 404));
+  } else {
+    res.status(200).json({
+      status: "success",
+      video: null,
     });
   }
-};
-
-exports.updateVideo = async (req, res) => {
-  try {
-    const video = await Video.findByIdAndUpdate(req.params.id, req.body, {
-      new: true,
-      runValidators: true,
-    });
-
-    if (!video) {
-      res.status(404).json({
-        status: "failed",
-        message: "No video found with this id!",
-      });
-    } else {
-      res.status(200).json({
-        status: "success",
-        video,
-      });
-    }
-  } catch (error) {
-    res.status(401).json({
-      status: "failed",
-      error,
-    });
-  }
-};
-
-exports.deleteVideo = async (req, res) => {
-  try {
-    const video = await Video.findByIdAndDelete(req.params.id);
-    if (!video) {
-      res.status(404).json({
-        status: "failed",
-        message: "No video found with this id!",
-      });
-    } else {
-      res.status(200).json({
-        status: "success",
-        video: null,
-      });
-    }
-  } catch (error) {
-    res.status(401).json({
-      status: "failed",
-      error,
-    });
-  }
-};
+});

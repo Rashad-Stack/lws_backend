@@ -6,25 +6,25 @@ const bcrypt = require("bcrypt");
 const userSchema = new mongoose.Schema({
   name: {
     type: String,
-    required: [true, "Please tell us you name!"]
+    required: [true, "Please tell us you name!"],
   },
   email: {
     type: String,
     required: [true, "Please provide your email!"],
     unique: true,
     lowercase: true,
-    validate: [validator.isEmail, "Please a valid email"]
+    validate: [validator.isEmail, "Please a valid email"],
   },
   role: {
     type: String,
     enum: ["student", "admin"],
-    default: "student"
+    default: "student",
   },
   password: {
     type: String,
     required: [true, "Please provide a password"],
     minlength: 8,
-    select: false
+    select: false,
   },
   confirmPassword: {
     type: String,
@@ -33,11 +33,12 @@ const userSchema = new mongoose.Schema({
       validator(el) {
         return el === this.password;
       },
-      message: "Password are not the same!"
-    }
+      message: "Password are not the same!",
+    },
   },
+  passwordChangedAt: Date,
   passwordResetToken: String,
-  passwordResetExpires: Date
+  passwordResetExpires: Date,
 });
 
 userSchema.pre("save", async function (next) {
@@ -71,6 +72,18 @@ userSchema.methods.createPasswordResetToken = function () {
   this.passwordResetExpires = Date.now() + 10 * 60 * 1000;
 
   return resetToken;
+};
+
+userSchema.methods.changedPasswordAfter = function (JWTTimestamp) {
+  if (this.passwordChangedAt) {
+    const changedTimestamp = parseInt(
+      this.passwordChangedAt.getTime() / 1000,
+      10
+    );
+    return changedTimestamp;
+  }
+  // False mean not changed
+  return false;
 };
 
 const User = mongoose.model("User", userSchema);
