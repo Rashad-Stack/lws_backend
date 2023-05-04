@@ -16,6 +16,4 @@ router
   .patch(authController.restricted, videoController.updateVideo)
   .delete(authController.restricted, videoController.deleteVideo);
 
-router;
-
 module.exports = router;

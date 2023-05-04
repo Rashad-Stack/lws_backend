@@ -5,8 +5,21 @@ const dbCastError = (err) => {
   return new AppError(message, 400);
 };
 
-const handleDuplicateFields = () => {
-  const message = `Duplicate field value. Please use another value!`;
+const handleDuplicateFieldsDB = (err) => {
+  const value = err.message.match(/(["'])(\\?.)*?\1/)[0];
+  console.log(
+    "🚀 ~ file: errorController.js:10 ~ handleDuplicateFieldsDB ~ value:",
+    value
+  );
+
+  const message = `Duplicate field value: ${value}. Please use another value!`;
+  return new AppError(message, 400);
+};
+
+const handleValidationErrorDB = (err) => {
+  const errors = Object.values(err.errors).map((el) => el.message);
+
+  const message = `Invalid input data. ${errors.join(". ")}`;
   return new AppError(message, 400);
 };
 
@@ -50,16 +63,19 @@ module.exports = (err, req, res, next) => {
   err.statuscode = err.statuscode || 500;
   err.status = err.status || "error";
 
-  let error = { ...err };
-  error.message = err.message;
-  console.log(error.code);
   if (process.env.NODE_ENV === "development") {
     devError(err, req, res);
   } else if (process.env.NODE_ENV === "production") {
-    prodError(err, req, res);
+    let error = { ...err };
+    error.message = err.message;
+
+    if (error.name === "CastError") error = dbCastError(error);
+    if (error.code === 11000) error = handleDuplicateFieldsDB(error);
+    if (error.errors.options.name === "ValidatorError")
+      error = handleValidationErrorDB(error);
+    if (error.name === "ValidatorError") error = handleValidationErrorDB(error);
+    if (error.name === "JsonWebTokenError") error = handleJWTError();
+    if (error.name === "TokenExpiredError") error = handleJWTExpiredError();
+    prodError(error, req, res);
   }
-  if (error.name === "CastError") error = dbCastError(error);
-  if (error.code === 11000) error = handleDuplicateFields();
-  if (error.name === "JsonWebTokenError") error = handleJWTError();
-  if (error.name === "TokenExpiredError") error = handleJWTExpiredError();
 };
