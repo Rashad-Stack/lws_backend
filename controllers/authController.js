@@ -177,7 +177,7 @@ exports.protect = catchAsync(async (req, res, next) => {
 });
 
 exports.restricted = (req, res, next) => {
-  console.log("🚀 ~ file: authController.js:180 ~ req:", req.user.role);
+  console.log("🚀 ~ file: authController.js:180 ~ req:", req.user);
   // role only admin
 
   if (req.user.role !== "admin") {
