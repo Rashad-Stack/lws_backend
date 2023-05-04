@@ -6,12 +6,15 @@ const router = express.Router();
 
 router.use(authController.protect);
 
-router.route("/").get(videoController.getVideo).post(videoController.postVideo);
+router
+  .route("/")
+  .get(videoController.getVideo)
+  .post(authController.restricted, videoController.postVideo);
 router
   .route("/:id")
   .get(videoController.getVideo)
-  .patch(videoController.updateVideo)
-  .delete(videoController.deleteVideo);
+  .patch(authController.restricted, videoController.updateVideo)
+  .delete(authController.restricted, videoController.deleteVideo);
 
 router;
 
