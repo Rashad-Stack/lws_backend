@@ -13,6 +13,7 @@ router
 
 router
   .route("/:id")
-  .patch(authController.restricted, quizController.updateQuiz);
+  .patch(authController.restricted, quizController.updateQuiz)
+  .delete(authController.restricted, quizController.deleteQuiz);
 
 module.exports = router;

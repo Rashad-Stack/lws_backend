@@ -11,7 +11,7 @@ exports.postVideo = catchAsync(async (req, res) => {
     description: req.body.description,
   });
 
-  res.status(200).json({
+  res.status(201).json({
     status: "success",
     video,
   });
@@ -55,7 +55,7 @@ exports.deleteVideo = catchAsync(async (req, res, next) => {
   if (!video) {
     return next(new AppError("No video found with this id!", 404));
   } else {
-    res.status(200).json({
+    res.status(204).json({
       status: "success",
       video: null,
     });

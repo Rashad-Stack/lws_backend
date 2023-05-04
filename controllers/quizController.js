@@ -10,7 +10,7 @@ exports.addQuiz = catchAsync(async (req, res, next) => {
     options: [...req.body.options],
   });
 
-  res.status(200).json({
+  res.status(201).json({
     status: "success",
     quiz,
   });
@@ -37,5 +37,17 @@ exports.updateQuiz = catchAsync(async (req, res, next) => {
   res.status(200).json({
     status: "success",
     quiz,
+  });
+});
+
+exports.deleteQuiz = catchAsync(async (req, res, next) => {
+  const quiz = await Quiz.findByIdAndDelete(req.params.id);
+
+  if (!quiz) {
+    return next(new AppError("No quiz found with this id!", 404));
+  }
+
+  res.status(204).json({
+    status: "success",
   });
 });
