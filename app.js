@@ -1,9 +1,10 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 
-const userRouter = require("./routes/userRoutes");
-const videoRouter = require("./routes/videoRoutes");
+const userRoutes = require("./routes/userRoutes");
+const videoRoutes = require("./routes/videoRoutes");
 const quizRoutes = require("./routes/quizRoutes");
+const assignmentRoutes = require("./routes/assignmentRoutes");
 
 const errorHandler = require("./controllers/errorController");
 const AppError = require("./utils/appError");
@@ -13,9 +14,10 @@ const app = express();
 app.use(bodyParser.json());
 
 // Define routes
-app.use("/api/v1/users", userRouter);
-app.use("/api/v1/videos", videoRouter);
+app.use("/api/v1/users", userRoutes);
+app.use("/api/v1/videos", videoRoutes);
 app.use("/api/v1/quizzes", quizRoutes);
+app.use("/api/v1/assignments", assignmentRoutes);
 
 // Unhandled routes
 app.all("*", (req, res, next) => {

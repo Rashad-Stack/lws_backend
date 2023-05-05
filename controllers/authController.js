@@ -177,9 +177,7 @@ exports.protect = catchAsync(async (req, res, next) => {
 });
 
 exports.restricted = (req, res, next) => {
-  console.log("🚀 ~ file: authController.js:180 ~ req:", req.user);
   // role only admin
-
   if (req.user.role !== "admin") {
     return next(
       new AppError("You do not have permission to perform this action", 403)

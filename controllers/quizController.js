@@ -3,12 +3,7 @@ const AppError = require("../utils/appError");
 const catchAsync = require("../utils/catchAsync");
 
 exports.addQuiz = catchAsync(async (req, res, next) => {
-  const quiz = await Quiz.create({
-    question: req.body.question,
-    videoId: req.body.videoId,
-    videoTile: req.body.videoTile,
-    options: [...req.body.options],
-  });
+  const quiz = await Quiz.create({ ...req.body });
 
   res.status(201).json({
     status: "success",
@@ -17,7 +12,10 @@ exports.addQuiz = catchAsync(async (req, res, next) => {
 });
 
 exports.getQuizzes = catchAsync(async (req, res, next) => {
-  const quizzes = await Quiz.find();
+  const query = req?.query?.videoId ? { videoId: req.query.videoId } : {};
+
+  const quizzes = await Quiz.find(query);
+
   res.status(200).json({
     status: "success",
     quizzes,
