@@ -21,7 +21,7 @@ const quizSchema = new mongoose.Schema({
     type: String,
     require: [true, "Please provide question related video id!"],
   },
-  videoTile: {
+  videoTitle: {
     type: String,
     require: [true, "Please provide question related video title!"],
   },

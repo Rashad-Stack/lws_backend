@@ -28,6 +28,10 @@ const quizMarkSchema = new mongoose.Schema({
     type: Number,
     default: 0,
   },
+  published: {
+    type: Boolean,
+    default: true,
+  },
 });
 
 const QuizMark = mongoose.model("QuizMark", quizMarkSchema);

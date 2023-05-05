@@ -17,9 +17,18 @@ exports.createAssignmentMark = catchAsync(async (req, res, next) => {
 });
 
 exports.getAssignmentMarks = catchAsync(async (req, res, next) => {
-  // const query = req?.query?.videoId ? { videoId: req.query.videoId,studentId:req.query.studentId } : {};
+  const query = req?.query?.videoId
+    ? { videoId: req.query.videoId, studentId: req.query.studentId }
+    : {};
 
-  const assignmentMark = await AssignmentMark.find();
+  const assignmentMark = await AssignmentMark.find(query);
+
+  if (!assignmentMark) {
+    return next(
+      new AppError("No assignment found related to this video!", 404)
+    );
+  }
+
   res.status(200).json({
     status: "success",
     assignmentMark,

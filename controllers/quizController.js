@@ -22,6 +22,10 @@ exports.getQuizzes = catchAsync(async (req, res, next) => {
   });
 });
 
+// exports.getQuizByVideoId=catchAsync(async(req,res,next)=>{
+//   const quizzes = await Quiz.find({videoId:req.query.videoId})
+// })
+
 exports.updateQuiz = catchAsync(async (req, res, next) => {
   const quiz = await Quiz.findByIdAndUpdate(req.params.id, req.body, {
     new: true,

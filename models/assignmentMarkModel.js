@@ -22,7 +22,10 @@ const assignmentMarkSchema = new mongoose.Schema({
     type: Number,
     require: [true, "Please provide a assignment mark!"],
   },
-  mark: Number,
+  mark: {
+    type: Number,
+    default: 0,
+  },
   repoLink: {
     type: String,
     require: [true, "Please provide assignment repository link!"],

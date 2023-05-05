@@ -7,10 +7,6 @@ const dbCastError = (err) => {
 
 const handleDuplicateFieldsDB = (err) => {
   const value = err.message.match(/(["'])(\\?.)*?\1/)[0];
-  console.log(
-    "🚀 ~ file: errorController.js:10 ~ handleDuplicateFieldsDB ~ value:",
-    value
-  );
 
   const message = `Duplicate field value: ${value}. Please use another value!`;
   return new AppError(message, 400);

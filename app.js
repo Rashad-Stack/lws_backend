@@ -1,5 +1,7 @@
 const express = require("express");
 const bodyParser = require("body-parser");
+const cors = require("cors");
+const cookieParser = require("cookie-parser");
 
 const userRoutes = require("./routes/userRoutes");
 const videoRoutes = require("./routes/videoRoutes");
@@ -13,6 +15,8 @@ const AppError = require("./utils/appError");
 
 // Start express app
 const app = express();
+app.use(cors());
+app.use(cookieParser());
 app.use(bodyParser.json());
 
 // Define routes

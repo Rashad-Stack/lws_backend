@@ -17,6 +17,14 @@ exports.postVideo = catchAsync(async (req, res) => {
   });
 });
 
+exports.getVideos = catchAsync(async (req, res, next) => {
+  const videos = await Video.find();
+  res.status(200).json({
+    status: "success",
+    videos,
+  });
+});
+
 exports.getVideo = catchAsync(async (req, res, next) => {
   const videos = await Video.find();
   if (videos.length > 0) {

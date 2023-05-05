@@ -8,7 +8,7 @@ router.use(authController.protect);
 
 router
   .route("/")
-  .get(videoController.getVideo)
+  .get(videoController.getVideos)
   .post(authController.restricted, videoController.postVideo);
 router
   .route("/:id")

@@ -6,6 +6,9 @@ const router = express.Router();
 
 router.use(authController.protect);
 
-router.route("/").post(quizMarkController.postQuizMark);
+router
+  .route("/")
+  .get(quizMarkController.getQuizMark)
+  .post(quizMarkController.postQuizMark);
 
 module.exports = router;

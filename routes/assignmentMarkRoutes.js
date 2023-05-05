@@ -9,7 +9,7 @@ router.use(authController.protect);
 
 router
   .route("/")
-  .get(authController.restricted, assignmentMarkController.getAssignmentMarks)
+  .get(assignmentMarkController.getAssignmentMarks)
   .post(assignmentMarkController.createAssignmentMark);
 
 router
