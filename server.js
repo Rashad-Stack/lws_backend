@@ -15,9 +15,9 @@ mongoose
   })
   .then(() => console.log("DB connection successful!"));
 
-app.listen(process.env.PORT || 3000, () => {
+const port = process.env.PORT || 3000;
+
+app.listen(port, () => {
   console.log(process.env.NODE_ENV);
-  console.log(
-    `Server running on  http://127.0.0.1:${process.env.APP_SERVER_PORT}`
-  );
+  console.log(`Server running on  http://127.0.0.1:${port}`);
 });
