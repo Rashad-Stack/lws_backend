@@ -18,7 +18,7 @@ exports.createAssignmentMark = catchAsync(async (req, res, next) => {
 
 exports.getAssignmentMarks = catchAsync(async (req, res, next) => {
   const query = req?.query?.videoId
-    ? { assignmentId: req.query.videoId, studentId: req.user.studentId }
+    ? { assignmentId: req.query.videoId, studentId: req.user._id }
     : {};
 
   const assignmentMark = await AssignmentMark.find(query);
